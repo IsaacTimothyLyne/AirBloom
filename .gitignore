@@ -1,0 +1,18 @@
+# Visual Studio
+*.suo
+*.user
+*.VC.db
+Builds/
+
+# JUCE
+JuceLibraryCode/jucer_*
+BinaryData/
+
+# IDE files
+.vscode/
+*.DS_Store
+
+# Binaries
+*.exe
+*.dll
+*.vst3
