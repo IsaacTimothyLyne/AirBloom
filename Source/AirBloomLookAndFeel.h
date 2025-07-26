@@ -10,9 +10,35 @@ public:
         knobStrip = juce::ImageCache::getFromMemory(BinaryData::knob_big1_png, BinaryData::knob_big1_pngSize);
         buttonOnImage = juce::ImageCache::getFromMemory(BinaryData::button_small_on_png, BinaryData::button_small_on_pngSize);
         buttonOffImage = juce::ImageCache::getFromMemory(BinaryData::button_small_off_png, BinaryData::button_small_off_pngSize);
+        menuBg = juce::ImageCache::getFromMemory(BinaryData::menu_background_png, BinaryData::menu_background_pngSize);
+        alertBg = juce::ImageCache::getFromMemory(BinaryData::articulations_back_png, BinaryData::articulations_back_pngSize);
     }
 
-    // film-strip knob (unchanged)
+    // draw your preset combo background and text as before...
+    void drawComboBox(juce::Graphics& g,
+        int width, int height,
+        bool /*isButtonDown*/,
+        int arrowX, int arrowY,
+        int arrowW, int arrowH,
+        juce::ComboBox& box) override
+    {
+        if (menuBg.isValid())
+        {
+            g.drawImage(menuBg,
+                0, 0, width, height,
+                0, 0, menuBg.getWidth(), menuBg.getHeight(),
+                false);
+        }
+        else
+        {
+            g.fillAll(juce::Colours::darkgrey);
+        }
+
+        g.setColour(juce::Colours::white);
+        g.setFont(14.0f);
+    }
+
+    // film-strip knob drawing unchanged...
     void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height,
         float sliderPosProportional, float, float, juce::Slider&) override
     {
@@ -30,41 +56,99 @@ public:
                 false);
             return;
         }
+
         LookAndFeel_V4::drawRotarySlider(g, x, y, width, height,
             sliderPosProportional,
             juce::MathConstants<float>::pi * 1.2f,
             juce::MathConstants<float>::twoPi,
-            *(juce::Slider*)nullptr);
+            *(juce::Slider*) nullptr);
+    }
+    void AirBloomLookAndFeel::drawAlertBox(juce::Graphics& g,
+        juce::AlertWindow& box,
+        const juce::Rectangle<int>& textAreaConst,
+        juce::TextLayout& layout)
+    {
+        // ---- background ----
+        if (alertBg.isValid())
+            g.drawImage(alertBg, box.getLocalBounds().toFloat(),
+                juce::RectanglePlacement::fillDestination);
+        else
+            g.fillAll(juce::Colours::darkgrey);
+
+        // ---- border ----
+        g.setColour(juce::Colours::black.withAlpha(0.6f));
+        g.drawRect(box.getLocalBounds(), 1);
+
+        // ---- message (e.g. Name:) ----
+        juce::Rectangle<int> area(textAreaConst);
+        area.removeFromTop(6);                          // tiny gap
+        layout.draw(g, area.toFloat());
+    }
+    void fillTextEditorBackground(juce::Graphics& g,
+        int w, int h,
+        juce::TextEditor&) override
+    {
+        if (menuBg.isValid())
+            g.drawImage(menuBg, 0, 0, w, h,
+                0, 0, menuBg.getWidth(), menuBg.getHeight());
+        else
+            g.fillAll(juce::Colour::fromRGB(25, 25, 25));   // fallback colour
     }
 
-    // draw Atmos button + text
-
-    void drawToggleButton(juce::Graphics& g,
-        juce::ToggleButton& btn,
-        bool, bool) override
+    void drawPopupMenuBackground(juce::Graphics& g,
+        int w, int h) override
     {
-        auto bounds = btn.getLocalBounds();
+        static auto bg = alertBg;
+
+        if (bg.isValid())
+            g.drawImage(bg, 0, 0, w, h, 0, 0, bg.getWidth(), bg.getHeight());
+        else
+            g.fillAll(juce::Colours::darkgrey);
+    }
+    void drawButtonBackground(juce::Graphics& g, juce::Button& b,
+        const juce::Colour&, bool, bool isDown) override
+    {
+        // Only skin plain TextButtons (ToggleButtons already handled)
+        if (dynamic_cast<juce::TextButton*> (&b) != nullptr)
+        {
+            const auto& img = isDown ? buttonOnImage : buttonOffImage;
+            g.drawImage(img, b.getLocalBounds().toFloat(),
+                juce::RectanglePlacement::fillDestination);
+            return;                                     // done
+        }
+
+        LookAndFeel_V4::drawButtonBackground(g, b,
+            b.findColour(juce::TextButton::buttonColourId), false, isDown);
+    }
+    // new: stretch your on/off art to fill the toggle-button component area
+    void drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn,
+        bool /*isMouseOver*/, bool /*isButtonDown*/) override
+    {
+        auto bounds = btn.getLocalBounds().toFloat();
         const auto& img = btn.getToggleState() ? buttonOnImage : buttonOffImage;
 
         if (img.isValid())
-            g.drawImage(img, bounds.toFloat(), false);
+        {
+            g.drawImage(img,
+                bounds,
+                juce::RectanglePlacement::fillDestination);
+        }
         else
+        {
             LookAndFeel_V4::drawToggleButton(g, btn, false, false);
+        }
 
-        // Now draw bold “ATMOS” text a bit higher
+        // then overlay the label text
         g.setColour(juce::Colours::white);
         g.setFont(juce::Font(14.0f, juce::Font::bold));
 
-        // Trim off the bottom 25% so the text sits up inside the top 75% of the button
+        // trim bottom so text sits in upper portion
         auto textArea = bounds.withTrimmedBottom(bounds.getHeight() * 0.15f);
-
         g.drawFittedText(btn.getButtonText(),
-            textArea,
-            juce::Justification::centred,
-            1);
+            textArea.getSmallestIntegerContainer(),
+            juce::Justification::centred, 1);
     }
 
-
 private:
-    juce::Image knobStrip, buttonOnImage, buttonOffImage;
+    juce::Image knobStrip, buttonOnImage, buttonOffImage, menuBg, alertBg;
 };

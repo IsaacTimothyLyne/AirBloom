@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="UHYQ3N" name="AirBloom" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="IsaacLyne"
-              companyWebsite="isaaclyne.com" companyEmail="mgmt@isaaclyne.com">
+              addUsingNamespaceToJuceHeader="1" jucerFormatVersion="1" companyName="IsaacLyne"
+              companyWebsite="isaaclyne.com" companyEmail="mgmt@isaaclyne.com"
+              defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;">
   <MAINGROUP id="Vj8mKP" name="AirBloom">
     <GROUP id="{9C6A38B1-B865-D764-88C9-51F18B5F714A}" name="Source">
+      <GROUP id="{4456B7FE-1869-1904-6185-3A41ABB8B516}" name="Utils">
+        <FILE id="E0AH2n" name="PresetManager.cpp" compile="1" resource="0"
+              file="Source/PresetManager.cpp"/>
+        <FILE id="s2KPKe" name="PresetManager.h" compile="0" resource="0" file="Source/PresetManager.h"/>
+      </GROUP>
       <GROUP id="{9F68904C-8A28-8B22-28F3-664508E0D255}" name="Images">
-        <FILE id="eGnUY7" name="button_small_off.png" compile="0" resource="1"
-              file="../../../../Downloads/button_small_off.png"/>
-        <FILE id="ljdpo4" name="button_small_on.png" compile="0" resource="1"
-              file="../../../../Downloads/button_small_on.png"/>
-        <FILE id="GuyeTG" name="background.png" compile="0" resource="1" file="../../../../Downloads/background.png"/>
-        <FILE id="A8wfv4" name="knob_big(1).png" compile="0" resource="1" file="../../../../Downloads/knob_big(1).png"/>
+        <FILE id="q8MtbL" name="articulations_back.png" compile="0" resource="1"
+              file="Assets/articulations_back.png"/>
+        <FILE id="TMZZrU" name="button_small_off.png" compile="0" resource="1"
+              file="Assets/button_small_off.png"/>
+        <FILE id="wMrXDt" name="button_small_on.png" compile="0" resource="1"
+              file="Assets/button_small_on.png"/>
+        <FILE id="DVVTp2" name="menu_background.png" compile="0" resource="1"
+              file="Assets/menu_background.png"/>
+        <FILE id="qjGbqZ" name="knob_big(1).png" compile="0" resource="1" file="Assets/knob_big(1).png"/>
+        <FILE id="JuvvFt" name="new_background.png" compile="0" resource="1"
+              file="Assets/new_background.png"/>
+        <FILE id="Mbg5nS" name="Super Vanilla.ttf" compile="0" resource="1"
+              file="Assets/Super Vanilla.ttf"/>
+        <FILE id="KgEQSu" name="ASPIRE AUDIO.png" compile="0" resource="1"
+              file="Assets/ASPIRE AUDIO.png"/>
       </GROUP>
       <FILE id="NfY2fL" name="AirBloomLookAndFeel.h" compile="0" resource="0"
             file="Source/AirBloomLookAndFeel.h"/>
@@ -42,7 +57,7 @@
   </MODULES>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
-    <VS2022 targetFolder="Builds/VisualStudio2022">
+    <VS2022 targetFolder="Builds/VisualStudio2022" extraDefs="DEV_PRESET_SAVE=0">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="AirBloom"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="AirBloom"/>
