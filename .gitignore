@@ -16,3 +16,26 @@ BinaryData/
 *.exe
 *.dll
 *.vst3
+
+# JUCE / C++ projects
+Builds/                 # all exporter projects + intermediate objs
+*.sln
+*.vcxproj*
+*.user
+*.obj
+*.pdb
+*.dll
+*.exe
+*.app
+*.ipa
+*.dSYM
+# CMake / Ninja
+build/
+CMakeBuild
+CMakeCache.txt
+# IDE fluff
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
