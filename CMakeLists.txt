@@ -33,6 +33,9 @@ juce_add_plugin(AirBloom
     SOURCE_DIRS              Source
 )
 
+# <-- add this -----------------------------------------------
+juce_generate_juce_header (AirBloom)
+# ------------------------------------------------------------
 
 # -----------------------------------------------------------------
 # 3. C++ standard + extra compiler flags (optional)
