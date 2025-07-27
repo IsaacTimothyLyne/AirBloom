@@ -1,4 +1,13 @@
-cmake_minimum_required(VERSION 3.21)
+# --- top of CMakeLists.txt -----------------------------------
+cmake_minimum_required (VERSION 3.21)
+
+# enable everything JUCE might need on each platform
+project (
+    AirBloom
+    VERSION 1.0.0
+    LANGUAGES C CXX OBJC OBJCXX   #  ← add C + Obj-C(+ +)
+)
+
 
 project(AirBloom LANGUAGES CXX)
 
