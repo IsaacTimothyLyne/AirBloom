@@ -10,15 +10,20 @@ add_subdirectory(extern/JUCE)
 # -----------------------------------------------------------------
 # 2. Define the plug-in target
 # -----------------------------------------------------------------
+set(COMAPANY "AspireAudio")              # no spaces
+set(PLUGIN_VERSION "1.0.0")              # change whenever you tag
+
 juce_add_plugin(AirBloom
-    COMPANY_NAME            "Aspire Audio"
+    COMPANY_NAME            "${COMAPANY}"
+    BUNDLE_ID               "com.${COMAPANY}.AirBloom"  # explicit, no spaces
+    VERSION                 "${PLUGIN_VERSION}"
     PLUGIN_MANUFACTURER_CODE AspA
     PLUGIN_CODE              Ablm
-    FORMATS                  VST3 AU     # add Standalone if you wish
+    FORMATS                  VST3 AU
     PRODUCT_NAME             "AirBloom"
-    # Everything in Source/ is part of the target, no wild-card hassle:
     SOURCE_DIRS              Source
 )
+
 
 # -----------------------------------------------------------------
 # 3. C++ standard + extra compiler flags (optional)
