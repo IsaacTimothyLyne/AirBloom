@@ -3,7 +3,8 @@
 <JUCERPROJECT id="UHYQ3N" name="AirBloom" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="1" jucerFormatVersion="1" companyName="IsaacLyne"
               companyWebsite="isaaclyne.com" companyEmail="mgmt@isaaclyne.com"
-              defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;">
+              defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;" pluginFormats="buildAAX,buildVST3"
+              pluginVST3Category="EQ,Filter,Fx,Generator,Mastering,Tools">
   <MAINGROUP id="Vj8mKP" name="AirBloom">
     <GROUP id="{9C6A38B1-B865-D764-88C9-51F18B5F714A}" name="Source">
       <GROUP id="{4456B7FE-1869-1904-6185-3A41ABB8B516}" name="Utils">
