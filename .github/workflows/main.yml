@@ -1,0 +1,51 @@
+name: Build-AirBloom
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:   [windows-latest, macos-latest]   # add ubuntu-latest if you need Linux
+        cfg:  [Release]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code + submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive          # pulls extern/JUCE
+
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest     # installs a recent CMake on both runners
+
+    - name: Configure
+      run:  cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.cfg }}
+
+    - name: Build
+      run:  cmake --build build --config ${{ matrix.cfg }} --parallel
+
+    # ---- package ---------------------------------------------------------
+    # Windows → VST3 lives in build\${cfg}\AirBloom.vst3
+    # macOS   → VST3/AU inside build/AirBloom_artefacts/${cfg}
+    - name: Zip plug-in artefacts
+      run: |
+        cd build
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+          powershell Compress-Archive -Path "**/*.vst3" -DestinationPath AirBloom_win.zip
+        else
+          zip -r AirBloom_mac.zip **/*.vst3 **/*.component || true
+        fi
+      shell: bash
+
+    - name: Upload artefacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: AirBloom-${{ matrix.os }}
+        path: |
+          build/AirBloom_win.zip
+          build/AirBloom_mac.zip
